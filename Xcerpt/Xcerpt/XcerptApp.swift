@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct XcerptApp: App {
+    @StateObject var bookStore = BookStore()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(bookStore: bookStore)
         }
     }
 }
