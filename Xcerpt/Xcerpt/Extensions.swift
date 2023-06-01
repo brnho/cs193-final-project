@@ -44,3 +44,50 @@ extension Color {
         self.init(hue: hue, saturation: newSaturation, brightness: brightness, opacity: opacity)
     }
 }
+
+// code from https://stackoverflow.com/questions/49614659/generate-list-of-unique-random-numbers-in-swift-from-range
+extension Int {
+    static func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
+        var set = Set<Int>()
+        while set.count < count {
+            set.insert(Int.random(in: min...max))
+        }
+        return Array(set).shuffled()
+    }
+
+}
+
+struct RGBA: Codable, Equatable, Hashable {
+    var red: Double
+    var green: Double
+    var blue: Double
+    var alpha: Double
+}
+
+extension Color {
+    init(rgba: RGBA) {
+        self.init(.sRGB, red: rgba.red, green: rgba.green, blue: rgba.blue, opacity: rgba.alpha)
+    }
+}
+
+extension RGBA {
+    init(color: Color) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        UIColor(color).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        self.init(red: Double(red), green: Double(green), blue: Double(blue), alpha: Double(alpha))
+    }
+}
+
+extension Book {
+    var uiColor1: Color {
+        get { Color(rgba: color1) }
+        set { color1 = RGBA(color: newValue) }
+    }
+    var uiColor2: Color {
+        get { Color(rgba: color2) }
+        set { color2 = RGBA(color: newValue) }
+    }
+}

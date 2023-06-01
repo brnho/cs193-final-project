@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookExcerptHeader: View {
-    let book: Book
+    @Binding var book: Book
     
     private let imageWidth = 50.0
     private let imageAspectRatio = 1.5
@@ -17,7 +17,11 @@ struct BookExcerptHeader: View {
         HStack {
             bookImage
             VStack(alignment: .leading) {
-                bookText
+                HStack{
+                    bookText
+                    Spacer()
+                    bookmarkButton
+                }
                 authorText
             }
         }
@@ -35,29 +39,40 @@ struct BookExcerptHeader: View {
         }
     }
     
-    @ViewBuilder
     private var bookText: some View {
-        if let title = book.title {
-            Text(title)
-                .font(.title2)
-                .bold()
-                .lineLimit(1)
-        }
+        Text(book.title)
+            .font(.title2)
+            .bold()
+            .lineLimit(1)
     }
     
-    @ViewBuilder
     private var authorText: some View {
-        if let authors = book.authors {
-            Text(authors.joined(separator: ", "))
-                .lineLimit(1)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+        Text(book.authors.joined(separator: ", "))
+            .lineLimit(1)
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+        
+    }
+    
+    private var bookmarkButton: some View {
+        Button {
+            book.isFavorited.toggle()
+        } label: {
+            Label("Bookmark", systemImage: book.isFavorited ? "star.fill" : "star")
+                .labelStyle(.iconOnly)
+                .foregroundColor(book.isFavorited ? .red : .gray)
         }
     }
 }
 
 struct BookExcerptHeader_Previews: PreviewProvider {
+    struct Preview: View {
+        @State var book = Book.builtins[0]
+        var body: some View {
+            BookExcerptHeader(book: $book)
+        }
+    }
     static var previews: some View {
-        BookExcerptHeader(book: Book.builtins[0])
+        Preview()
     }
 }

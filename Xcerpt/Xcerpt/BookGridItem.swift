@@ -41,20 +41,16 @@ struct BookGridItem: View {
     
     @ViewBuilder
     private var bookText: some View {
-        if let title = book.title {
-            Text(title)
-                .lineLimit(1)
-        }
+        Text(book.title)
+            .lineLimit(1)
     }
     
     @ViewBuilder
     private var authorText: some View {
-        if let authors = book.authors {
-            Text(authors.joined(separator: ", "))
-                .lineLimit(1)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
+        Text(book.authors.joined(separator: ", "))
+            .lineLimit(1)
+            .font(.subheadline)
+            .foregroundColor(.secondary)
     }
 }
 

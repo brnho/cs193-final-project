@@ -15,51 +15,18 @@ struct BookExcerpt: View {
         ZStack {
             List {
                 Section {
-                    BookExcerptHeader(book: book)
-                        .background(RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(UIColor.systemBackground)))
+                    BookExcerptHeader(book: $book)
                 }
                 Section(header: Text("\(book.excerpts.count) excerpts")) {
                     ForEach(book.excerpts) { excerpt in
                         if let index = book.excerpts.firstIndex(where: { $0.id == excerpt.id}) {
-                            ExcerptView(excerpt: $book.excerpts[index])
+                            BindingExcerptView(excerpt: $book.excerpts[index])
                         }
                     }
                 }
             }
             .toolbar {
                 addButton
-            }
-        }
-    }
-    
-    struct ExcerptView: View {
-        @Binding var excerpt: Excerpt
-        
-        var body: some View {
-            VStack(alignment: .leading, spacing: 5) {
-                Text(excerpt.text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HStack {
-                    Text("Chapter \(excerpt.chapter)")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    Text("Page \(excerpt.page)")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    bookmarkButton
-                }
-            }
-            .padding(5)
-        }
-        
-        private var bookmarkButton: some View {
-            Button {
-                excerpt.isBookmarked.toggle()
-            } label: {
-                Label("Bookmark", systemImage: excerpt.isBookmarked ? "bookmark.fill" : "bookmark")
-                    .labelStyle(.iconOnly)
             }
         }
     }

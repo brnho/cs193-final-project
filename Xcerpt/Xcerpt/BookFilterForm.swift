@@ -10,7 +10,7 @@ import SwiftUI
 struct BookFilterForm: View {
     typealias Order = BookStore.Order
     @Binding var sortOrder: Order
-    @State private var showOnlyFavorites = false
+    @Binding var showOnlyFavorites: Bool
     
     var body: some View {
         List {
@@ -28,8 +28,9 @@ struct BookFilterForm: View {
 struct BookFilterForm_Previews: PreviewProvider {
     struct Preview: View {
         @State var bookStore = BookStore()
+        @State var showOnlyFavorites = false
         var body: some View {
-            BookFilterForm(sortOrder: $bookStore.sortOrder)
+            BookFilterForm(sortOrder: $bookStore.sortOrder, showOnlyFavorites: $showOnlyFavorites)
         }
     }
     static var previews: some View {

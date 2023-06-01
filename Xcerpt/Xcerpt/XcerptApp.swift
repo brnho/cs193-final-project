@@ -12,7 +12,8 @@ struct XcerptApp: App {
     @StateObject var bookStore = BookStore()
     var body: some Scene {
         WindowGroup {
-            ContentView(bookStore: bookStore)
+            ContentView()
+                .environmentObject(bookStore)
         }
     }
 }
